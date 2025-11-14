@@ -1,0 +1,87 @@
+[33mcommit 667744d89f2896841e590c7a41fd619f8f783421[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Author: Luiz Felipe <luizfelipealvesneves3@gmail.com>
+Date:   Wed Nov 12 20:28:08 2025 -0400
+
+    ChessException and ChessPosition
+
+[1mdiff --git a/src/chess/ChessException.java b/src/chess/ChessException.java[m
+[1mnew file mode 100644[m
+[1mindex 0000000..f1bee6c[m
+[1m--- /dev/null[m
+[1m+++ b/src/chess/ChessException.java[m
+[36m@@ -0,0 +1,11 @@[m
+[32m+[m[32mpackage chess;[m
+[32m+[m
+[32m+[m[32mpublic class ChessException extends RuntimeException {[m
+[32m+[m[32mprivate static final long  serialVersionUID = 1L;[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    public ChessException(String msg){[m
+[32m+[m[32m        super(msg);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m}[m
+[1mdiff --git a/src/chess/ChessMatch.java b/src/chess/ChessMatch.java[m
+[1mindex 88c2e3c..6db1def 100644[m
+[1m--- a/src/chess/ChessMatch.java[m
+[1m+++ b/src/chess/ChessMatch.java[m
+[36m@@ -23,10 +23,13 @@[m [mpublic class ChessMatch {[m
+                 }[m
+             }return  mat;[m
+     } [m
+[32m+[m[32m    private void placeNewPiece(char column, int row, ChessPiece piece){[m
+[32m+[m[32m        board.placePiece(piece, new ChessPosition(column, row).toPosition());[m
+[32m+[m[32m    }[m
+ [m
+     private void initialSetup(){[m
+[31m-        board.placePiece(new Rook(board, Color.WHITE), new Position(2, 1));    [m
+[31m-        board.placePiece(new King(board, Color.BLACK), new Position(0, 4));    [m
+[31m-        board.placePiece(new King(board, Color.WHITE), new Position(7, 4));    [m
+[32m+[m[32m        placeNewPiece('b', 6, new Rook(board, Color.WHITE));[m[41m    [m
+[32m+[m[32m        placeNewPiece('e', 8, new King(board, Color.BLACK));[m[41m    [m
+[32m+[m[32m        placeNewPiece('e', 1, new King(board, Color.WHITE));[m[41m    [m
+     }[m
+ } [m
+[1mdiff --git a/src/chess/ChessPosition.java b/src/chess/ChessPosition.java[m
+[1mnew file mode 100644[m
+[1mindex 0000000..13c387b[m
+[1m--- /dev/null[m
+[1m+++ b/src/chess/ChessPosition.java[m
+[36m@@ -0,0 +1,37 @@[m
+[32m+[m[32mpackage chess;[m
+[32m+[m
+[32m+[m[32mimport boardgame.Position;[m
+[32m+[m
+[32m+[m[32mpublic class ChessPosition {[m
+[32m+[m
+[32m+[m[32m    private char column;[m
+[32m+[m[32m    private int row;[m
+[32m+[m
+[32m+[m[32m    public ChessPosition(char column, int row) {[m
+[32m+[m[32m        if (column < 'a' || column > 'h' || row < 1 || row > 8){[m
+[32m+[m[32m            throw new ChessException(" Error instantiating ChessPosition. Valid values are fron a1 to h8.");[m
+[32m+[m[32m        }[m
+[32m+[m[32m        this.column = column;[m
+[32m+[m[32m        this.row = row;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public char getColumn() {[m
+[32m+[m[32m        return column;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public int getRow() {[m
+[32m+[m[32m        return row;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    protected Position toPosition(){[m
+[32m+[m[32m        return new Position(8 - row, column - 'a');[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    protected static ChessPosition fromPosition(Position position){[m
+[32m+[m[32m        return new ChessPosition((char)('a' - position.getColumn()), 8 - position.getRow());[m
+[32m+[m[32m    }[m
+[32m+[m[32m    @Override[m
+[32m+[m[32m    public String toString(){[m
+[32m+[m[32m        return "" + column + row;[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
