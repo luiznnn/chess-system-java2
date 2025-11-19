@@ -5,7 +5,6 @@ import boardgame.Piece;
 import boardgame.Position;
 import chess.pieces.King;
 import chess.pieces.Rook;
-import java.lang.annotation.Target;
 
 
 
@@ -66,6 +65,6 @@ public class ChessMatch {
     placeNewPiece('d', 7, new Rook(board, Color.BLACK));
     placeNewPiece('e', 7, new Rook(board, Color.BLACK));
 
-    placeNewPiece('e', 8, new King(board, Color.BLACK));  
+    placeNewPiece('e', 8, new King(board, Color.BLACK));
     }
 }
